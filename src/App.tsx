@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Box, FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components'
-import { Link } from 'react-router-dom';
+import SingleImageCard from './components/SingleImageCard';
+import BreedSelect from './components/BreedSelect';
 
-type ImageType = {
+export type ImageType = {
   url: string,
   id: string,
 }
@@ -24,28 +24,13 @@ const ImagesContainer = styled.div`
   justify-content: flex-start;
 `
 
-const ImageBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 240px;
-`
-
-const ButtonStyle = styled.button`
-  background: yellow;
-  color: white;
-  margin: 8px;
-  border: none;
-  border-radius: 4px;
-  height: 32px;
-`
-
 export const DEFAULT_URL = 'https://api.thecatapi.com/v1';
 
 function App() {
   const [allBreeders, setAllBreeder] = useState<string[]>([])
   const [selectedBreed, setSelectedBreed] = useState<string>('Select Breed')
   const [allImages, setAllImages] = useState<ImageType[]>([])
+
   useEffect(() => {
     const setBreeders = async () => {
       const { data } = await axios.get(`${DEFAULT_URL}/breeds`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
@@ -64,29 +49,13 @@ function App() {
     findBreed().catch((error) => console.error(error));
   }, [selectedBreed])
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedBreed(event.target.value as string);
-  };
-
   return (
     <AppStyle>
       <h1>Cat Browser</h1>
-      <h2>Breed</h2>
-      <Box sx={{ minWidth: 120 }}>
-        <FormControl fullWidth>
-          <Select value={selectedBreed} onChange={handleChange}>
-            <MenuItem value='Select Breed'>Select Breed</MenuItem>
-            {allBreeders.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)}
-          </Select>
-        </FormControl>
-      </Box>
+      <BreedSelect setSelectedBreed={setSelectedBreed} selectedBreed={selectedBreed} allBreeders={allBreeders} />
+
       <ImagesContainer>
-        {allImages.map(({ url, id }: ImageType) => (
-          <ImageBox key={id}>
-            <img src={url} />
-            <ButtonStyle><Link to={'/' + id}>View Detail</Link></ButtonStyle>
-          </ImageBox>
-        ))}
+        {allImages.map((image: ImageType) => <SingleImageCard image={image} />)}
       </ImagesContainer>
     </AppStyle>
   );
