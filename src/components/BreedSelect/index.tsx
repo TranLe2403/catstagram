@@ -1,12 +1,12 @@
 import { Box, FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { useSelectedBreedContext } from '../../context/selectedBreedContext';
 
 type PropsType = {
-  setSelectedBreed: React.Dispatch<React.SetStateAction<string>>,
-  selectedBreed: string,
   allBreeders: string[]
 }
 
-function BreedSelect({ setSelectedBreed, selectedBreed, allBreeders }: PropsType) {
+function BreedSelect({ allBreeders }: PropsType) {
+  const { selectedBreed, setSelectedBreed } = useSelectedBreedContext();
   const handleChange = (event: SelectChangeEvent) => {
     setSelectedBreed(event.target.value as string);
   };

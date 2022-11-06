@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components'
 import SingleImageCard from './components/SingleImageCard';
 import BreedSelect from './components/BreedSelect';
+import { SelectedBreedContext } from './context/selectedBreedContext';
 
 export type ImageType = {
   url: string,
@@ -28,8 +29,7 @@ export const DEFAULT_URL = 'https://api.thecatapi.com/v1';
 
 function App() {
   const [allBreeders, setAllBreeder] = useState<string[]>([])
-  const [selectedBreed, setSelectedBreed] = useState<string>('Select Breed')
-  const [allImages, setAllImages] = useState<ImageType[]>([])
+  const [selectedBreed, setSelectedBreed] = useState<string>('Select Breed') //.should use useContext for this
 
   useEffect(() => {
     const setBreeders = async () => {
@@ -39,25 +39,17 @@ function App() {
     setBreeders().catch((error) => console.error(error));
   }, [])
 
-  useEffect(() => {
-    const findBreed = async () => {
-      if (selectedBreed === 'Select Breed') return;
-      const { data } = await axios.get(`${DEFAULT_URL}/breeds/search?q=${selectedBreed}`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
-      const { data: images } = await axios.get(`${DEFAULT_URL}/images/search`, { params: { breed_ids: data[0].id, limit: 20 } });
-      setAllImages(images.map(({ url, id }: ImageType) => ({ url, id })));
-    };
-    findBreed().catch((error) => console.error(error));
-  }, [selectedBreed])
-
   return (
+    <SelectedBreedContext.Provider value={{ selectedBreed, setSelectedBreed }}>
     <AppStyle>
       <h1>Cat Browser</h1>
-      <BreedSelect setSelectedBreed={setSelectedBreed} selectedBreed={selectedBreed} allBreeders={allBreeders} />
+      <BreedSelect allBreeders={allBreeders} />
 
       <ImagesContainer>
-        {allImages.map((image: ImageType) => <SingleImageCard image={image} />)}
+        <SingleImageCard />
       </ImagesContainer>
     </AppStyle>
+    </SelectedBreedContext.Provider>
   );
 }
 
