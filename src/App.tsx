@@ -3,6 +3,11 @@ import { Box, FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/mate
 import axios from 'axios';
 import styled from 'styled-components'
 
+type ImageType = {
+  url: string,
+  id: string,
+}
+
 const AppStyle = styled.div`
   width: 100%;
   display: flex;
@@ -37,27 +42,26 @@ const ButtonStyle = styled.button`
   height: 32px;
 `
 
-function App() {
-  const [allBreeds, setAllBreed] = useState<string[]>([])
-  const [selectedBreed, setSelectedBreed] = useState<string>('Select Breed')
-  const [breedFound, setBreedFound] = useState({})
-  const [allImages, setAllImages] = useState<{ url: string, id: string }[]>([])
+const URL = 'https://api.thecatapi.com/v1';
 
+function App() {
+  const [allBreeders, setAllBreeder] = useState<string[]>([])
+  const [selectedBreed, setSelectedBreed] = useState<string>('Select Breed')
+  const [allImages, setAllImages] = useState<ImageType[]>([])
   useEffect(() => {
-    const getBreeds = async () => {
-      const { data } = await axios.get('https://api.thecatapi.com/v1/breeds', { headers: { Authorization: process.env.REACT_APP_API_KEY } });
-      setAllBreed(data.map((item: any) => item.name))
+    const setBreeders = async () => {
+      const { data } = await axios.get(`${URL}/breeds`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
+      setAllBreeder(data.map((item: any) => item.name))
     };
-    getBreeds().catch((error) => console.error(error));
+    setBreeders().catch((error) => console.error(error));
   }, [])
 
-  useEffect(() => {
+  useEffect(() => {    
     const findBreed = async () => {
       if (selectedBreed === 'Select Breed') return;
-      const { data } = await axios.get(`https://api.thecatapi.com/v1/breeds/search?q=${selectedBreed}`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
-      setBreedFound(data)
-      const { data: images } = await axios.get(`https://api.thecatapi.com/v1/images/search`, { params: { breed_ids: data[0].id, limit: 20 } });
-      setAllImages(images.map((item: any) => ({ url: item.url, id: item.id })));
+      const { data } = await axios.get(`${URL}/breeds/search?q=${selectedBreed}`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
+      const { data: images } = await axios.get(`${URL}/images/search`, { params: { breed_ids: data[0].id, limit: 20 } });
+      setAllImages(images.map(({ url, id }: ImageType) => ({ url, id })));
     };
     findBreed().catch((error) => console.error(error));
   }, [selectedBreed])
@@ -79,17 +83,17 @@ function App() {
             onChange={handleChange}
           >
             <MenuItem value='Select Breed'>Select Breed</MenuItem>
-            {allBreeds.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)}
+            {allBreeders.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)}
           </Select>
         </FormControl>
       </Box>
       <ImagesContainer>
-      {allImages.map(({ url, id }: { url: string, id: string }) => (
-        <ImageBox key={id}>
-          <ImageStyle src={url} />
-          <ButtonStyle>View Detail</ButtonStyle>
-        </ImageBox>
-      ))}
+        {allImages.map(({ url, id }: ImageType) => (
+          <ImageBox key={id}>
+            <ImageStyle src={url} />
+            <ButtonStyle>View Detail</ButtonStyle>
+          </ImageBox>
+        ))}
       </ImagesContainer>
     </AppStyle>
   );
