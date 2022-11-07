@@ -8,17 +8,25 @@ import { useSelectedBreedContext } from '../../context/selectedBreedContext';
 const ImageBox = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
   width: 240px;
+  border: 1px solid #c1c1c1;
+  height: fit-content;
+  border-radius: 4px;
+  overflow: hidden;
 `
 
 const ButtonStyle = styled.button`
-  background: yellow;
-  color: white;
-  margin: 8px;
+  background: #007bff;
+  margin: 16px;
   border: none;
   border-radius: 4px;
-  height: 32px;
+  height: 40px;
+`
+
+const WhiteTextLink = styled(Link)`
+  color: white;
+  text-decoration: none;
+  line-height: 1.5;
 `
 
 const SingleImageCard = () => {
@@ -40,7 +48,7 @@ const SingleImageCard = () => {
       {allImages.map((image: ImageType) => (
         <ImageBox key={image.id}>
           <img src={image.url} />
-          <ButtonStyle><Link to={'/' + image.id}>View Detail</Link></ButtonStyle>
+          <ButtonStyle><WhiteTextLink to={'/' + image.id}>View Detail</WhiteTextLink></ButtonStyle>
         </ImageBox>
       ))}
     </>
