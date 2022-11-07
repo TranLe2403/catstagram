@@ -4,6 +4,7 @@ import { DEFAULT_URL, ImageType } from '../../App';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelectedBreedContext } from '../../context/selectedBreedContext';
+import CustomButton from '../CustomButton';
 
 const CardItemStyle = styled.div`
   padding: 0 16px;
@@ -28,14 +29,6 @@ const ImageBox = styled.div`
   height: fit-content;
   border-radius: 4px;
   overflow: hidden;
-`
-
-const ButtonStyle = styled.button`
-  background: #007bff;
-  margin: 16px;
-  border: none;
-  border-radius: 4px;
-  height: 40px;
 `
 
 const WhiteTextLink = styled(Link)`
@@ -64,7 +57,9 @@ const SingleImageCard = () => {
         <CardItemStyle key={image.id}>
           <ImageBox >
             <img src={image.url} />
-            <ButtonStyle><WhiteTextLink to={'/' + image.id}>View Detail</WhiteTextLink></ButtonStyle>
+            <CustomButton bgColor='#007bff' margin='16px 16px 16px 16px' fullWidth>
+              <WhiteTextLink to={'/' + image.id}>View Detail</WhiteTextLink>
+            </CustomButton>
           </ImageBox>
         </CardItemStyle>
       ))}

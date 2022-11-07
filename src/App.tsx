@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import SingleImageCard from './components/SingleImageCard';
 import BreedSelect from './components/BreedSelect';
 import { SelectedBreedContext } from './context/selectedBreedContext';
+import CustomButton from './components/CustomButton';
 
 export type ImageType = {
   url: string,
@@ -34,7 +35,7 @@ function App() {
     const setBreeders = async () => {
       const { data } = await axios.get(`${DEFAULT_URL}/breeds`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
       const breedNameObj = Object.fromEntries(data.map((item: any) => [item.id, item.name]))
-      if(window.location.href.includes('?breed=')){
+      if (window.location.href.includes('?breed=')) {
         const breed_id = window.location.href.split('?breed=')[1]
         setSelectedBreed(breedNameObj[breed_id])
       }
@@ -53,6 +54,7 @@ function App() {
       <ImagesContainer>
         <SingleImageCard />
       </ImagesContainer>
+      <CustomButton bgColor='#28a745' margin='0 0 0 16px'>Load More</CustomButton>
     </SelectedBreedContext.Provider>
   );
 }
