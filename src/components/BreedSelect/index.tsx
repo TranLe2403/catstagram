@@ -16,7 +16,7 @@ function BreedSelect({ allBreeders }: PropsType) {
       <label>Breed</label>
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
-          <Select value={selectedBreed} onChange={handleChange}>
+          <Select sx={{ height: 40 }} value={selectedBreed} onChange={handleChange}>
             <MenuItem value='Select Breed'>Select Breed</MenuItem>
             {allBreeders.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)}
           </Select>

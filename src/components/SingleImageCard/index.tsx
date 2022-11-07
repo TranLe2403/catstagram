@@ -5,10 +5,25 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelectedBreedContext } from '../../context/selectedBreedContext';
 
+const CardItemStyle = styled.div`
+  padding: 0 16px;
+
+  @media ( min-width: 768px) {
+    width: calc(25% - 32px);
+  }
+
+  @media (max-width: 767px) {
+    width: calc(33% - 32px);
+  }
+
+  @media (max-width: 575px) {
+    width: calc(50% - 32px);
+  }
+`
+
 const ImageBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 240px;
   border: 1px solid #c1c1c1;
   height: fit-content;
   border-radius: 4px;
@@ -46,10 +61,12 @@ const SingleImageCard = () => {
   return (
     <>
       {allImages.map((image: ImageType) => (
-        <ImageBox key={image.id}>
-          <img src={image.url} />
-          <ButtonStyle><WhiteTextLink to={'/' + image.id}>View Detail</WhiteTextLink></ButtonStyle>
-        </ImageBox>
+        <CardItemStyle key={image.id}>
+          <ImageBox >
+            <img src={image.url} />
+            <ButtonStyle><WhiteTextLink to={'/' + image.id}>View Detail</WhiteTextLink></ButtonStyle>
+          </ImageBox>
+        </CardItemStyle>
       ))}
     </>
   );

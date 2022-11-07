@@ -10,26 +10,25 @@ export type ImageType = {
   id: string,
 }
 
-const AppStyle = styled.div`
+const ImagesContainer = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  flex-wrap: wrap;
 `
 
-const ImagesContainer = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: flex-start;
+  width: fit-content;
+  margin-left: 16px;
 `
 
 export const DEFAULT_URL = 'https://api.thecatapi.com/v1';
 
 function App() {
   const [allBreeders, setAllBreeder] = useState<string[]>([])
-  const [selectedBreed, setSelectedBreed] = useState<string>('Select Breed') //.should use useContext for this
+  const [selectedBreed, setSelectedBreed] = useState<string>('Select Breed')
 
   useEffect(() => {
     const setBreeders = async () => {
@@ -41,14 +40,14 @@ function App() {
 
   return (
     <SelectedBreedContext.Provider value={{ selectedBreed, setSelectedBreed }}>
-    <AppStyle>
-      <h1>Cat Browser</h1>
-      <BreedSelect allBreeders={allBreeders} />
+      <HeaderContainer>
+        <h1>Cat Browser</h1>
+        <BreedSelect allBreeders={allBreeders} />
+      </HeaderContainer>
 
       <ImagesContainer>
         <SingleImageCard />
       </ImagesContainer>
-    </AppStyle>
     </SelectedBreedContext.Provider>
   );
 }
