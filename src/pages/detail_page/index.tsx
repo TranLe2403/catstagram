@@ -10,6 +10,7 @@ type DetailType = {
   name: string,
   temperament: string,
   url: string,
+  breed_id: string,
 }
 
 const DetailContainer = styled.div`
@@ -44,9 +45,9 @@ function DetailPage() {
   useEffect(() => {
     const setBreeders = async () => {
       const { data } = await axios.get(`${DEFAULT_URL}/images/${id}`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
-      const { origin, description, name, temperament } = data.breeds[0];
+      const { origin, description, name, temperament, id: breed_id } = data.breeds[0];
       const { url } = data;
-      const formatedData = { origin, description, name, temperament, url }
+      const formatedData = { origin, description, name, temperament, url, breed_id }
       setImgInfo(formatedData)
     };
     setBreeders().catch((error) => console.error(error));
@@ -56,7 +57,7 @@ function DetailPage() {
 
   return (
     <DetailContainer>
-      <BackButton onClick={() => { document.location.href = "/" }}>Back</BackButton>
+      <BackButton onClick={() => { document.location.href = `/?breed=${imgInfo.breed_id}` }}>Back</BackButton>
       <img src={imgInfo.url} />
       <InfoContainer >
         <h2>{imgInfo.name}</h2>
