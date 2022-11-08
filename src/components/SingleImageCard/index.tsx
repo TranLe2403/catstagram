@@ -47,7 +47,7 @@ const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
   const { selectedBreed } = useSelectedBreedContext();
   const [allImages, setAllImages] = useState<ImageType[]>([]);
 
-  useEffect(() => {
+  useEffect(() => {    
     const findBreed = async () => {
       if (selectedBreed[0] === 'select_breed') return;
       const { data, headers } = await axios.get(`${DEFAULT_URL}/images/search`, {
@@ -60,7 +60,7 @@ const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
       setAllImages(newBreedSet);
     };
     findBreed().catch((error) => console.error(error));
-  }, [selectedBreed, page, setIsInvisible, allImages]);
+  }, [selectedBreed, page]);
 
   const handleClick = (id: string) => (document.location.href = '/' + id);
 
