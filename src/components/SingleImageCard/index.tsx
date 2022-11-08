@@ -59,7 +59,9 @@ const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
       setIsInvisible(Number(headers['pagination-count']) <= newBreedSet.length);
       setAllImages(newBreedSet);
     };
-    findBreed().catch((error) => console.error(error));
+    findBreed().catch(() =>
+      alert('Apologies but we could not load new cats for you at this time! Miau!')
+    );
   }, [selectedBreed, page]);
 
   const handleClick = (id: string) => (document.location.href = '/' + id);

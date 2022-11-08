@@ -42,7 +42,9 @@ function App() {
       }
       setAllBreeds(breedArray);
     };
-    setBreeders().catch((error) => console.error(error));
+    setBreeders().catch(() =>
+      alert('Apologies but we could not load new cats for you at this time! Miau!')
+    );
   }, []);
 
   const handleClick = () => setPage(page + 1);

@@ -43,7 +43,9 @@ function DetailPage() {
       const formatedData = { origin, description, name, temperament, url, id: breed_id };
       setImgInfo(formatedData);
     };
-    setBreeds().catch((error) => console.error(error));
+    setBreeds().catch(() =>
+      alert('Apologies but we could not load new cats for you at this time! Miau!')
+    );
   });
 
   const handleClick = () => (document.location.href = `/?breed=${imgInfo?.id}`);
