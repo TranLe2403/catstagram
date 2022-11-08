@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -32,13 +31,16 @@ function App() {
 
   useEffect(() => {
     const setBreeders = async () => {
-      const { data } = await axios.get(`${DEFAULT_URL}/breeds`, { headers: { 'x-api-key': process.env.REACT_APP_API_KEY } });
-      const breedNameObj = Object.fromEntries(data.map((item: any) => [item.id, item.name]));
+      const { data } = await axios.get<{ id: string; name: string }[]>(`${DEFAULT_URL}/breeds`, {
+        headers: { 'x-api-key': process.env.REACT_APP_API_KEY }
+      });
+      const breedArray = data.map(({ id, name }) => [id, name]) as BreedType[];
+      const breedNameObj = Object.fromEntries(breedArray);
       if (window.location.href.includes('?breed=')) {
         const breed_id = window.location.href.split('?breed=')[1];
         setSelectedBreed([breed_id, breedNameObj[breed_id]]);
       }
-      setAllBreeds(data.map((item: any) => [item.id, item.name]));
+      setAllBreeds(breedArray);
     };
     setBreeders().catch((error) => console.error(error));
   }, []);

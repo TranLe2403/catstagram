@@ -5,14 +5,15 @@ import styled from 'styled-components';
 import { DEFAULT_URL } from '../../App';
 import CustomButton from '../../components/CustomButton';
 
-type DetailType = {
+type BreedInfoType = {
   origin: string;
   description: string;
   name: string;
   temperament: string;
-  url: string;
-  breed_id: string;
+  id: string;
 };
+
+type DetailType = BreedInfoType & { url: string };
 
 const DetailContainer = styled.div`
   width: 100%;
@@ -33,19 +34,19 @@ function DetailPage() {
   const [imgInfo, setImgInfo] = useState<DetailType>();
 
   useEffect(() => {
-    const setBreeders = async () => {
+    const setBreeds = async () => {
       const { data } = await axios.get(`${DEFAULT_URL}/images/${id}`, {
         headers: { 'x-api-key': process.env.REACT_APP_API_KEY }
       });
       const { origin, description, name, temperament, id: breed_id } = data.breeds[0];
       const { url } = data;
-      const formatedData = { origin, description, name, temperament, url, breed_id };
+      const formatedData = { origin, description, name, temperament, url, id: breed_id };
       setImgInfo(formatedData);
     };
-    setBreeders().catch((error) => console.error(error));
+    setBreeds().catch((error) => console.error(error));
   });
 
-  const handleClick = () => (document.location.href = `/?breed=${imgInfo?.breed_id}`);
+  const handleClick = () => (document.location.href = `/?breed=${imgInfo?.id}`);
 
   if (!imgInfo) return <h3>Loading...</h3>;
   return (
