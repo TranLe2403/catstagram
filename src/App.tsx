@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     const setBreeders = async () => {
-      const { data } = await axios.get(`${DEFAULT_URL}/breeds`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
+      const { data } = await axios.get(`${DEFAULT_URL}/breeds`, { headers: { 'x-api-key': process.env.REACT_APP_API_KEY } });
       const breedNameObj = Object.fromEntries(data.map((item: any) => [item.id, item.name]))
       if (window.location.href.includes('?breed=')) {
         const breed_id = window.location.href.split('?breed=')[1]

@@ -47,7 +47,10 @@ const SingleImageCard = () => {
       if (selectedBreed[0] === 'select_breed') return;
       const { data } = await axios.get(
         `${DEFAULT_URL}/images/search`,
-        { params: { breed_ids: selectedBreed[0], limit: 20 } }
+        {
+          headers: { 'x-api-key': process.env.REACT_APP_API_KEY },
+          params: { breed_ids: selectedBreed[0], limit: 20 }
+        }
       );
       setAllImages(data.map(({ url, id }: ImageType) => ({ url, id })));
     };

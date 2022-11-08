@@ -34,7 +34,7 @@ function DetailPage() {
 
   useEffect(() => {
     const setBreeders = async () => {
-      const { data } = await axios.get(`${DEFAULT_URL}/images/${id}`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
+      const { data } = await axios.get(`${DEFAULT_URL}/images/${id}`, { headers: { 'x-api-key': process.env.REACT_APP_API_KEY } });
       const { origin, description, name, temperament, id: breed_id } = data.breeds[0];
       const { url } = data;
       const formatedData = { origin, description, name, temperament, url, breed_id }
