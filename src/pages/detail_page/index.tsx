@@ -43,12 +43,9 @@ function DetailPage() {
     setBreeders().catch((error) => console.error(error));
   })
 
-  const handleClick = () => {
-    document.location.href = `/?breed=${imgInfo?.breed_id}`
-  }
+  const handleClick = () => document.location.href = `/?breed=${imgInfo?.breed_id}`;
 
   if (!imgInfo) return <h3>Loading...</h3>
-
   return (
     <DetailContainer>
       <CustomButton bgColor='#007bff' margin='0 0 0 16px' onClick={handleClick}>Back</CustomButton>

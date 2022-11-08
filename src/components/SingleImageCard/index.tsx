@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
-import { DEFAULT_URL, ImageType } from '../../App';
+import { DEFAULT_URL } from '../../App';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSelectedBreedContext } from '../../context/selectedBreedContext';
 import CustomButton from '../CustomButton';
+import { ImageType } from '../../types';
 
 const CardItemStyle = styled.div`
   padding: 0 16px;
@@ -53,13 +54,15 @@ const SingleImageCard = () => {
     findBreed().catch((error) => console.error(error));
   }, [selectedBreed])
 
+  const handleClick = (id: string) => document.location.href = '/' + id;
+
   return (
     <>
       {allImages.map(({ id, url }: ImageType) => (
         <CardItemStyle key={id}>
           <ImageBox>
             <img src={url} />
-            <CustomButton bgColor='#007bff' margin='16px 16px 16px 16px' fullWidth>
+            <CustomButton onClick={() => handleClick(id)} bgColor='#007bff' margin='16px 16px 16px 16px' fullWidth>
               <WhiteTextLink to={'/' + id}>View Detail</WhiteTextLink>
             </CustomButton>
           </ImageBox>

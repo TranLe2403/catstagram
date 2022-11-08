@@ -9,6 +9,7 @@ const ButtonStyle = styled.button<{ bgColor: string, margin: string, fullWidth: 
   margin: ${({ margin }) => margin};;
   color: white;
   border-radius: 4px;
+  cursor: pointer;
 `
 
 type PropsType = {
