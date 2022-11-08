@@ -43,22 +43,24 @@ const SingleImageCard = () => {
 
   useEffect(() => {
     const findBreed = async () => {
-      if (selectedBreed === 'Select Breed') return;
-      const { data } = await axios.get(`${DEFAULT_URL}/breeds/search?q=${selectedBreed}`, { headers: { Authorization: process.env.REACT_APP_API_KEY } });
-      const { data: images } = await axios.get(`${DEFAULT_URL}/images/search`, { params: { breed_ids: data[0].id, limit: 20 } });
-      setAllImages(images.map(({ url, id }: ImageType) => ({ url, id })));
+      if (selectedBreed[0] === 'select_breed') return;
+      const { data } = await axios.get(
+        `${DEFAULT_URL}/images/search`,
+        { params: { breed_ids: selectedBreed[0], limit: 20 } }
+      );
+      setAllImages(data.map(({ url, id }: ImageType) => ({ url, id })));
     };
     findBreed().catch((error) => console.error(error));
   }, [selectedBreed])
 
   return (
     <>
-      {allImages.map((image: ImageType) => (
-        <CardItemStyle key={image.id}>
-          <ImageBox >
-            <img src={image.url} />
+      {allImages.map(({ id, url }: ImageType) => (
+        <CardItemStyle key={id}>
+          <ImageBox>
+            <img src={url} />
             <CustomButton bgColor='#007bff' margin='16px 16px 16px 16px' fullWidth>
-              <WhiteTextLink to={'/' + image.id}>View Detail</WhiteTextLink>
+              <WhiteTextLink to={'/' + id}>View Detail</WhiteTextLink>
             </CustomButton>
           </ImageBox>
         </CardItemStyle>

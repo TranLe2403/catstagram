@@ -28,8 +28,8 @@ const HeaderContainer = styled.div`
 export const DEFAULT_URL = 'https://api.thecatapi.com/v1';
 
 function App() {
-  const [allBreeders, setAllBreeder] = useState<string[]>([])
-  const [selectedBreed, setSelectedBreed] = useState<string>('Select Breed')
+  const [allBreeds, setAllBreeds] = useState<[string, string][]>([])
+  const [selectedBreed, setSelectedBreed] = useState<[string, string]>(['selected_breed','Select Breed'])
 
   useEffect(() => {
     const setBreeders = async () => {
@@ -37,9 +37,9 @@ function App() {
       const breedNameObj = Object.fromEntries(data.map((item: any) => [item.id, item.name]))
       if (window.location.href.includes('?breed=')) {
         const breed_id = window.location.href.split('?breed=')[1]
-        setSelectedBreed(breedNameObj[breed_id])
+        setSelectedBreed([breed_id, breedNameObj[breed_id]])
       }
-      setAllBreeder(data.map((item: any) => item.name))
+      setAllBreeds(data.map((item: any) => [item.id, item.name]))
     };
     setBreeders().catch((error) => console.error(error));
   }, [])
@@ -48,7 +48,7 @@ function App() {
     <SelectedBreedContext.Provider value={{ selectedBreed, setSelectedBreed }}>
       <HeaderContainer>
         <h1>Cat Browser</h1>
-        <BreedSelect allBreeders={allBreeders} />
+        <BreedSelect allBreeds={allBreeds} />
       </HeaderContainer>
 
       <ImagesContainer>

@@ -1,14 +1,13 @@
 import { Box, FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { useSelectedBreedContext } from '../../context/selectedBreedContext';
 
-type PropsType = {
-  allBreeders: string[]
-}
-
-function BreedSelect({ allBreeders }: PropsType) {
+function BreedSelect({ allBreeds }: { allBreeds: [string, string][] }) {
   const { selectedBreed, setSelectedBreed } = useSelectedBreedContext();
-  const handleChange = (event: SelectChangeEvent) => {
-    setSelectedBreed(event.target.value as string);
+  const handleChange = (e: SelectChangeEvent) => {
+    const event = e.target.value as string
+    const foundItem = allBreeds.find(([, name]) => name === event)
+    const breed_id = foundItem === undefined ? 'selected_breed' : foundItem[0]
+    setSelectedBreed([breed_id, event]);
   };
 
   return (
@@ -16,9 +15,9 @@ function BreedSelect({ allBreeders }: PropsType) {
       <label>Breed</label>
       <Box sx={{ minWidth: 120 }}>
         <FormControl fullWidth>
-          <Select sx={{ height: 40 }} value={selectedBreed} onChange={handleChange}>
+          <Select sx={{ height: 40 }} value={selectedBreed[1]} onChange={handleChange}>
             <MenuItem value='Select Breed'>Select Breed</MenuItem>
-            {allBreeders.map(item => <MenuItem key={item} value={item}>{item}</MenuItem>)}
+            {allBreeds.map(([key, value]) => <MenuItem key={key} value={value}>{value}</MenuItem>)}
           </Select>
         </FormControl>
       </Box>
