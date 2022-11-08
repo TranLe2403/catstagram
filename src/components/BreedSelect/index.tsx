@@ -1,7 +1,8 @@
 import { Box, FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { useSelectedBreedContext } from '../../context/selectedBreedContext';
+import { BreedType } from '../../types';
 
-function BreedSelect({ allBreeds }: { allBreeds: [string, string][] }) {
+function BreedSelect({ allBreeds }: { allBreeds: BreedType[] }) {
   const { selectedBreed, setSelectedBreed } = useSelectedBreedContext();
   const handleChange = (e: SelectChangeEvent) => {
     const event = e.target.value as string

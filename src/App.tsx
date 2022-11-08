@@ -5,11 +5,7 @@ import SingleImageCard from './components/SingleImageCard';
 import BreedSelect from './components/BreedSelect';
 import { SelectedBreedContext } from './context/selectedBreedContext';
 import CustomButton from './components/CustomButton';
-
-export type ImageType = {
-  url: string,
-  id: string,
-}
+import { BreedType } from './types';
 
 const ImagesContainer = styled.div`
   width: 100%;
@@ -28,8 +24,8 @@ const HeaderContainer = styled.div`
 export const DEFAULT_URL = 'https://api.thecatapi.com/v1';
 
 function App() {
-  const [allBreeds, setAllBreeds] = useState<[string, string][]>([])
-  const [selectedBreed, setSelectedBreed] = useState<[string, string]>(['selected_breed','Select Breed'])
+  const [allBreeds, setAllBreeds] = useState<BreedType[]>([])
+  const [selectedBreed, setSelectedBreed] = useState<BreedType>(['selected_breed','Select Breed'])
 
   useEffect(() => {
     const setBreeders = async () => {

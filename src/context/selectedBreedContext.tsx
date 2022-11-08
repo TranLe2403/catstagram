@@ -1,8 +1,9 @@
 import { createContext, useContext } from "react";
+import { BreedType } from "../types";
 
 type BreedContext = {
-  selectedBreed: [string, string],
-  setSelectedBreed: (breed: [string, string]) => void;
+  selectedBreed: BreedType,
+  setSelectedBreed: (breed: BreedType) => void;
 };
 export const SelectedBreedContext = createContext<BreedContext>({
   selectedBreed: ['selected_breed', 'Select Breed'],
