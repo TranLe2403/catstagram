@@ -38,24 +38,32 @@ const WhiteTextLink = styled(Link)`
   line-height: 1.5;
 `
 
-const SingleImageCard = () => {
+type PropsType = {
+  setIsInvisible: React.Dispatch<React.SetStateAction<boolean>>,
+  page: number
+}
+
+const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
   const { selectedBreed } = useSelectedBreedContext();
   const [allImages, setAllImages] = useState<ImageType[]>([])
 
   useEffect(() => {
     const findBreed = async () => {
       if (selectedBreed[0] === 'select_breed') return;
-      const { data } = await axios.get(
+      const { data, headers } = await axios.get(
         `${DEFAULT_URL}/images/search`,
         {
           headers: { 'x-api-key': process.env.REACT_APP_API_KEY },
-          params: { breed_ids: selectedBreed[0], limit: 20 }
+          params: { breed_ids: selectedBreed[0], limit: 5, page, order: 'desc' }
         }
       );
-      setAllImages(data.map(({ url, id }: ImageType) => ({ url, id })));
+      const formatedData = data.map(({ url, id }: ImageType) => ({ url, id }))
+      const newBreedSet = allImages.concat(formatedData)
+      setIsInvisible(Number(headers['pagination-count']) <= newBreedSet.length);
+      setAllImages(newBreedSet);
     };
     findBreed().catch((error) => console.error(error));
-  }, [selectedBreed])
+  }, [selectedBreed, page])
 
   const handleClick = (id: string) => document.location.href = '/' + id;
 

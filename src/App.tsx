@@ -26,6 +26,8 @@ export const DEFAULT_URL = 'https://api.thecatapi.com/v1';
 function App() {
   const [allBreeds, setAllBreeds] = useState<BreedType[]>([])
   const [selectedBreed, setSelectedBreed] = useState<BreedType>(['selected_breed','Select Breed'])
+  const [isInvisible, setIsInvisible] = useState<boolean>(false)
+  const [page, setPage]= useState<number>(0)
 
   useEffect(() => {
     const setBreeders = async () => {
@@ -40,6 +42,8 @@ function App() {
     setBreeders().catch((error) => console.error(error));
   }, [])
 
+  const handleClick = () => setPage(page + 1);
+
   return (
     <SelectedBreedContext.Provider value={{ selectedBreed, setSelectedBreed }}>
       <HeaderContainer>
@@ -48,9 +52,9 @@ function App() {
       </HeaderContainer>
 
       <ImagesContainer>
-        <SingleImageCard />
+        <SingleImageCard setIsInvisible={setIsInvisible} page={page} />
       </ImagesContainer>
-      <CustomButton bgColor='#28a745' margin='0 0 0 16px'>Load More</CustomButton>
+      {isInvisible ? null : <CustomButton onClick={handleClick} bgColor='#28a745' margin='0 0 0 16px'>Load More</CustomButton>}
     </SelectedBreedContext.Provider>
   );
 }
