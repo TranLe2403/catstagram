@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { DEFAULT_URL } from '../../App';
 import { useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ import { ImageType } from '../../types';
 const CardItemStyle = styled.div`
   padding: 0 16px;
 
-  @media ( min-width: 768px) {
+  @media (min-width: 768px) {
     width: calc(25% - 32px);
   }
 
@@ -21,7 +21,7 @@ const CardItemStyle = styled.div`
   @media (max-width: 575px) {
     width: calc(50% - 32px);
   }
-`
+`;
 
 const ImageBox = styled.div`
   display: flex;
@@ -30,50 +30,47 @@ const ImageBox = styled.div`
   height: fit-content;
   border-radius: 4px;
   overflow: hidden;
-`
+`;
 
 const WhiteTextLink = styled(Link)`
   color: white;
   text-decoration: none;
   line-height: 1.5;
-`
+`;
 
 type PropsType = {
-  setIsInvisible: React.Dispatch<React.SetStateAction<boolean>>,
-  page: number
-}
+  setIsInvisible: React.Dispatch<React.SetStateAction<boolean>>;
+  page: number;
+};
 
 const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
   const { selectedBreed } = useSelectedBreedContext();
-  const [allImages, setAllImages] = useState<ImageType[]>([])
+  const [allImages, setAllImages] = useState<ImageType[]>([]);
 
   useEffect(() => {
     const findBreed = async () => {
       if (selectedBreed[0] === 'select_breed') return;
-      const { data, headers } = await axios.get(
-        `${DEFAULT_URL}/images/search`,
-        {
-          headers: { 'x-api-key': process.env.REACT_APP_API_KEY },
-          params: { breed_ids: selectedBreed[0], limit: 5, page, order: 'desc' }
-        }
-      );
-      const formatedData = data.map(({ url, id }: ImageType) => ({ url, id }))
-      const newBreedSet = allImages.concat(formatedData)
+      const { data, headers } = await axios.get(`${DEFAULT_URL}/images/search`, {
+        headers: { 'x-api-key': process.env.REACT_APP_API_KEY },
+        params: { breed_ids: selectedBreed[0], limit: 5, page, order: 'desc' }
+      });
+      const formatedData = data.map(({ url, id }: ImageType) => ({ url, id }));
+      const newBreedSet = allImages.concat(formatedData);
       setIsInvisible(Number(headers['pagination-count']) <= newBreedSet.length);
       setAllImages(newBreedSet);
     };
     findBreed().catch((error) => console.error(error));
-  }, [selectedBreed, page])
+  }, [selectedBreed, page, setIsInvisible, allImages]);
 
-  const handleClick = (id: string) => document.location.href = '/' + id;
+  const handleClick = (id: string) => (document.location.href = '/' + id);
 
   return (
     <>
       {allImages.map(({ id, url }: ImageType) => (
         <CardItemStyle key={id}>
           <ImageBox>
-            <img src={url} />
-            <CustomButton onClick={() => handleClick(id)} bgColor='#007bff' margin='16px 16px 16px 16px' fullWidth>
+            <img src={url} alt={url} />
+            <CustomButton onClick={() => handleClick(id)} bgColor="#007bff" margin="16px 16px 16px 16px" fullWidth>
               <WhiteTextLink to={'/' + id}>View Detail</WhiteTextLink>
             </CustomButton>
           </ImageBox>
@@ -81,6 +78,6 @@ const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
       ))}
     </>
   );
-}
+};
 
 export default SingleImageCard;

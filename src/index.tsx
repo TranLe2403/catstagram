@@ -13,7 +13,7 @@ const AppStyle = styled.div`
   justify-content: center;
   height: 100%;
   margin: 16px 0;
-`
+`;
 
 const Wrapper = styled.div`
   width: 100%;
@@ -37,11 +37,9 @@ const Wrapper = styled.div`
   @media (max-width: 575px) {
     max-width: 540px;
   }
-`
+`;
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <AppStyle>
@@ -49,7 +47,7 @@ root.render(
         <Router>
           <Routes>
             <Route path={`/:id`} element={<DetailPage />} />
-            <Route path='/' element={<App />} />
+            <Route path="/" element={<App />} />
           </Routes>
         </Router>
       </Wrapper>
