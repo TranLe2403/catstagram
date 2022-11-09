@@ -5,7 +5,7 @@ import SingleImageCard from './components/SingleImageCard';
 import BreedSelect from './components/BreedSelect';
 import { SelectedBreedContext } from './context/selectedBreedContext';
 import CustomButton from './components/CustomButton';
-import { BreedType } from './types';
+import { BreedType, ImageType } from './types';
 
 const ImagesContainer = styled.div`
   width: 100%;
@@ -28,6 +28,7 @@ function App() {
   const [selectedBreed, setSelectedBreed] = useState<BreedType>(['selected_breed', 'Select Breed']);
   const [isInvisible, setIsInvisible] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
+  const [allImages, setAllImages] = useState<ImageType[]>([]);
 
   useEffect(() => {
     const setBreeders = async () => {
@@ -53,11 +54,16 @@ function App() {
     <SelectedBreedContext.Provider value={{ selectedBreed, setSelectedBreed }}>
       <HeaderContainer>
         <h1>Cat Browser</h1>
-        <BreedSelect allBreeds={allBreeds} />
+        <BreedSelect allBreeds={allBreeds} setPage={setPage} setAllImages={setAllImages} />
       </HeaderContainer>
 
       <ImagesContainer>
-        <SingleImageCard setIsInvisible={setIsInvisible} page={page} />
+        <SingleImageCard
+          allImages={allImages}
+          setAllImages={setAllImages}
+          setIsInvisible={setIsInvisible}
+          page={page}
+        />
       </ImagesContainer>
       {isInvisible ? null : (
         <CustomButton onClick={handleClick} bgColor="#28a745" margin="0 0 0 16px">

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { DEFAULT_URL } from '../../App';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import { useSelectedBreedContext } from '../../context/selectedBreedContext';
 import CustomButton from '../CustomButton';
@@ -41,11 +41,12 @@ const WhiteTextLink = styled(Link)`
 type PropsType = {
   setIsInvisible: React.Dispatch<React.SetStateAction<boolean>>;
   page: number;
+  allImages: ImageType[];
+  setAllImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
 };
 
-const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
+const SingleImageCard = ({ setIsInvisible, page, allImages, setAllImages }: PropsType) => {
   const { selectedBreed } = useSelectedBreedContext();
-  const [allImages, setAllImages] = useState<ImageType[]>([]);
 
   useEffect(() => {
     const findBreed = async () => {

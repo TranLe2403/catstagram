@@ -1,13 +1,23 @@
 import { Box, FormControl, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { useSelectedBreedContext } from '../../context/selectedBreedContext';
-import { BreedType } from '../../types';
+import { BreedType, ImageType } from '../../types';
 
-function BreedSelect({ allBreeds }: { allBreeds: BreedType[] }) {
+function BreedSelect({
+  allBreeds,
+  setPage,
+  setAllImages
+}: {
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  allBreeds: BreedType[];
+  setAllImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
+}) {
   const { selectedBreed, setSelectedBreed } = useSelectedBreedContext();
   const handleChange = (e: SelectChangeEvent) => {
     const event = e.target.value as string;
     const foundItem = allBreeds.find(([, name]) => name === event);
     const breed_id = foundItem === undefined ? 'selected_breed' : foundItem[0];
+    setPage(0);
+    setAllImages([]);
     setSelectedBreed([breed_id, event]);
   };
 
