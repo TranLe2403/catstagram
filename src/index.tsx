@@ -22,11 +22,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 16px;
 
-  @media (min-width: 1200px) {
+  @media (min-width: 1201px) {
     max-width: 1140px;
   }
 
-  @media (max-width: 991px) {
+  @media (max-width: 1200px) {
     max-width: 960px;
   }
 
