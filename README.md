@@ -1,46 +1,19 @@
-# Getting Started with Create React App
+# Catstagram
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## How could I run the application?
 
-## Available Scripts
+- Firstly, you need to make sure you have `NodeJS` on your machine (install it [here](https://nodejs.org/en/)). The application could be run from version 16.15.1.
+- After opening application folder, enter command `npm install` to install all dependencies used.
+- `npm start` to run the application. Normally, It will be run on localhost:3000, if you are also running another application, please either change port for the application or terminate the current working application.
+- Open your web browser and navigate to the link displayed on your terminal.
 
-In the project directory, you can run:
+## Main features in the application
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- The application has two pages: Home page and Detail page.
+- On the `Home page`, the application should render all breeds available under a dropdown.
+- If a breed is chosen, the application should render breed images with a link to go to detail page (initally 5 items).
+- User could load more images by clicking on `Load More` button (5 images loaded at a time).
+- If user has reached the end of breed image list, the `Load More` button would be disabled.
+- Once clicking on `View Detail` in any certain image card, the page would route to `Detail page`, which contains image and other information such as breed name, description, origin, etc.
+- There is also a `Back button`. That helps to go back to the home page with the last chosen breed and its images.
+- Application is responsive in Desktop, Tablet and Mobile environment.
