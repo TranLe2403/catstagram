@@ -30,19 +30,20 @@ function App() {
   const [page, setPage] = useState<number>(0);
   const [breedImages, setBreedImages] = useState<ImageType[]>([]);
 
+  const setBreeders = async () => {
+    const { data } = await axios.get<{ id: string; name: string }[]>(`${DEFAULT_URL}/breeds`, {
+      headers: { 'x-api-key': process.env.REACT_APP_API_KEY }
+    });
+    const breedArray = data.map(({ id, name }) => [id, name]) as BreedType[];
+    const breedNameObj = Object.fromEntries(breedArray);
+    if (window.location.href.includes('?breed=')) {
+      const breed_id = window.location.href.split('?breed=')[1];
+      setSelectedBreed([breed_id, breedNameObj[breed_id]]);
+    }
+    setAllBreeds(breedArray);
+  };
+
   useEffect(() => {
-    const setBreeders = async () => {
-      const { data } = await axios.get<{ id: string; name: string }[]>(`${DEFAULT_URL}/breeds`, {
-        headers: { 'x-api-key': process.env.REACT_APP_API_KEY }
-      });
-      const breedArray = data.map(({ id, name }) => [id, name]) as BreedType[];
-      const breedNameObj = Object.fromEntries(breedArray);
-      if (window.location.href.includes('?breed=')) {
-        const breed_id = window.location.href.split('?breed=')[1];
-        setSelectedBreed([breed_id, breedNameObj[breed_id]]);
-      }
-      setAllBreeds(breedArray);
-    };
     setBreeders().catch(() =>
       alert('Apologies but we could not load new cats for you at this time! Miau!')
     );
@@ -51,9 +52,7 @@ function App() {
   const handleClick = () => setPage(page + 1);
 
   return (
-    <BreedContext.Provider
-      value={{ selectedBreed, setSelectedBreed, breedImages, setBreedImages }}
-    >
+    <BreedContext.Provider value={{ selectedBreed, setSelectedBreed, breedImages, setBreedImages }}>
       <HeaderContainer>
         <h1>Cat Browser</h1>
         <BreedSelect allBreeds={allBreeds} setPage={setPage} />
@@ -62,11 +61,15 @@ function App() {
       <ImagesContainer>
         <SingleImageCard setIsInvisible={setIsInvisible} page={page} />
       </ImagesContainer>
-      {isInvisible ? null : (
-        <CustomButton onClick={handleClick} bgColor="#28a745" margin="0 0 0 16px">
-          Load More
-        </CustomButton>
-      )}
+      {selectedBreed[0] === 'selected_breed' && <p style={{marginLeft: 16}}>No cat available</p>}
+      <CustomButton
+        disabled={isInvisible}
+        onClick={handleClick}
+        bgColor="#28a745"
+        margin="0 0 0 16px"
+      >
+        Load More
+      </CustomButton>
     </BreedContext.Provider>
   );
 }
