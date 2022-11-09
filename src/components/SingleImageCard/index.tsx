@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { DEFAULT_URL } from '../../App';
 import { useEffect } from 'react';
 import axios from 'axios';
-import { useSelectedBreedContext } from '../../context/selectedBreedContext';
+import { useBreedContext } from '../../context/breedContext';
 import CustomButton from '../CustomButton';
 import { ImageType } from '../../types';
 
@@ -41,12 +41,10 @@ const WhiteTextLink = styled(Link)`
 type PropsType = {
   setIsInvisible: React.Dispatch<React.SetStateAction<boolean>>;
   page: number;
-  allImages: ImageType[];
-  setAllImages: React.Dispatch<React.SetStateAction<ImageType[]>>;
 };
 
-const SingleImageCard = ({ setIsInvisible, page, allImages, setAllImages }: PropsType) => {
-  const { selectedBreed } = useSelectedBreedContext();
+const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
+  const { selectedBreed, breedImages, setBreedImages } = useBreedContext();
 
   useEffect(() => {
     const findBreed = async () => {
@@ -56,9 +54,9 @@ const SingleImageCard = ({ setIsInvisible, page, allImages, setAllImages }: Prop
         params: { breed_ids: selectedBreed[0], limit: 5, page, order: 'desc' }
       });
       const formatedData = data.map(({ url, id }) => ({ url, id }));
-      const newBreedSet = allImages.concat(formatedData);
+      const newBreedSet = breedImages.concat(formatedData);
       setIsInvisible(Number(headers['pagination-count']) <= newBreedSet.length);
-      setAllImages(newBreedSet);
+      setBreedImages(newBreedSet);
     };
     findBreed().catch(() =>
       alert('Apologies but we could not load new cats for you at this time! Miau!')
@@ -69,7 +67,7 @@ const SingleImageCard = ({ setIsInvisible, page, allImages, setAllImages }: Prop
 
   return (
     <>
-      {allImages.map(({ id, url }: ImageType) => (
+      {breedImages.map(({ id, url }: ImageType) => (
         <CardItemStyle key={id}>
           <ImageBox>
             <img src={url} alt={url} />

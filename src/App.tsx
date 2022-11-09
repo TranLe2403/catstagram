@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import SingleImageCard from './components/SingleImageCard';
 import BreedSelect from './components/BreedSelect';
-import { SelectedBreedContext } from './context/selectedBreedContext';
+import { BreedContext } from './context/breedContext';
 import CustomButton from './components/CustomButton';
 import { BreedType, ImageType } from './types';
 
@@ -28,7 +28,7 @@ function App() {
   const [selectedBreed, setSelectedBreed] = useState<BreedType>(['selected_breed', 'Select Breed']);
   const [isInvisible, setIsInvisible] = useState<boolean>(false);
   const [page, setPage] = useState<number>(0);
-  const [allImages, setAllImages] = useState<ImageType[]>([]);
+  const [breedImages, setBreedImages] = useState<ImageType[]>([]);
 
   useEffect(() => {
     const setBreeders = async () => {
@@ -51,26 +51,23 @@ function App() {
   const handleClick = () => setPage(page + 1);
 
   return (
-    <SelectedBreedContext.Provider value={{ selectedBreed, setSelectedBreed }}>
+    <BreedContext.Provider
+      value={{ selectedBreed, setSelectedBreed, breedImages, setBreedImages }}
+    >
       <HeaderContainer>
         <h1>Cat Browser</h1>
-        <BreedSelect allBreeds={allBreeds} setPage={setPage} setAllImages={setAllImages} />
+        <BreedSelect allBreeds={allBreeds} setPage={setPage} />
       </HeaderContainer>
 
       <ImagesContainer>
-        <SingleImageCard
-          allImages={allImages}
-          setAllImages={setAllImages}
-          setIsInvisible={setIsInvisible}
-          page={page}
-        />
+        <SingleImageCard setIsInvisible={setIsInvisible} page={page} />
       </ImagesContainer>
       {isInvisible ? null : (
         <CustomButton onClick={handleClick} bgColor="#28a745" margin="0 0 0 16px">
           Load More
         </CustomButton>
       )}
-    </SelectedBreedContext.Provider>
+    </BreedContext.Provider>
   );
 }
 
