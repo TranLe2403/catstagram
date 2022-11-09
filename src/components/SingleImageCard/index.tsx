@@ -46,24 +46,23 @@ type PropsType = {
 const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
   const { selectedBreed, breedImages, setBreedImages } = useBreedContext();
 
+  const findBreed = async () => {
+    if (selectedBreed[0] === 'select_breed') return;
+    const { data, headers } = await axios.get<ImageType[]>(`${DEFAULT_URL}/images/search`, {
+      headers: { 'x-api-key': process.env.REACT_APP_API_KEY },
+      params: { breed_ids: selectedBreed[0], limit: 5, page, order: 'desc' }
+    });
+    const formatedData = data.map(({ url, id }) => ({ url, id }));
+    const newBreedSet = breedImages.concat(formatedData);
+    setIsInvisible(Number(headers['pagination-count']) <= newBreedSet.length);
+    setBreedImages(newBreedSet);
+  };
+
   useEffect(() => {
-    const findBreed = async () => {
-      if (selectedBreed[0] === 'select_breed') return;
-      const { data, headers } = await axios.get<ImageType[]>(`${DEFAULT_URL}/images/search`, {
-        headers: { 'x-api-key': process.env.REACT_APP_API_KEY },
-        params: { breed_ids: selectedBreed[0], limit: 5, page, order: 'desc' }
-      });
-      const formatedData = data.map(({ url, id }) => ({ url, id }));
-      const newBreedSet = breedImages.concat(formatedData);
-      setIsInvisible(Number(headers['pagination-count']) <= newBreedSet.length);
-      setBreedImages(newBreedSet);
-    };
     findBreed().catch(() =>
       alert('Apologies but we could not load new cats for you at this time! Miau!')
     );
   }, [selectedBreed, page]);
-
-  const handleClick = (id: string) => (document.location.href = '/' + id);
 
   return (
     <>
@@ -72,7 +71,7 @@ const SingleImageCard = ({ setIsInvisible, page }: PropsType) => {
           <ImageBox>
             <img src={url} alt={url} />
             <CustomButton
-              onClick={() => handleClick(id)}
+              onClick={() => document.location.href = '/' + id}
               bgColor="#007bff"
               margin="16px 16px 16px 16px"
               fullWidth

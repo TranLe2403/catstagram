@@ -49,8 +49,6 @@ function App() {
     );
   }, []);
 
-  const handleClick = () => setPage(page + 1);
-
   return (
     <BreedContext.Provider value={{ selectedBreed, setSelectedBreed, breedImages, setBreedImages }}>
       <HeaderContainer>
@@ -61,10 +59,10 @@ function App() {
       <ImagesContainer>
         <SingleImageCard setIsInvisible={setIsInvisible} page={page} />
       </ImagesContainer>
-      {selectedBreed[0] === 'selected_breed' && <p style={{marginLeft: 16}}>No cat available</p>}
+      {selectedBreed[0] === 'selected_breed' && <p style={{ marginLeft: 16 }}>No cat available</p>}
       <CustomButton
         disabled={isInvisible}
-        onClick={handleClick}
+        onClick={() => setPage(page + 1)}
         bgColor="#28a745"
         margin="0 0 0 16px"
       >

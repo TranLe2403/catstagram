@@ -33,16 +33,17 @@ function DetailPage() {
   const { id } = useParams();
   const [imgInfo, setImgInfo] = useState<DetailType>();
 
+  const setBreeds = async () => {
+    const { data } = await axios.get(`${DEFAULT_URL}/images/${id}`, {
+      headers: { 'x-api-key': process.env.REACT_APP_API_KEY }
+    });
+    const { origin, description, name, temperament, id: breed_id } = data.breeds[0];
+    const { url } = data;
+    const formatedData = { origin, description, name, temperament, url, id: breed_id };
+    setImgInfo(formatedData);
+  };
+
   useEffect(() => {
-    const setBreeds = async () => {
-      const { data } = await axios.get(`${DEFAULT_URL}/images/${id}`, {
-        headers: { 'x-api-key': process.env.REACT_APP_API_KEY }
-      });
-      const { origin, description, name, temperament, id: breed_id } = data.breeds[0];
-      const { url } = data;
-      const formatedData = { origin, description, name, temperament, url, id: breed_id };
-      setImgInfo(formatedData);
-    };
     setBreeds().catch(() =>
       alert('Apologies but we could not load new cats for you at this time! Miau!')
     );
